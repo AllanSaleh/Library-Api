@@ -10,3 +10,12 @@ As a customer how many times can I bring my car to the shop?
 How many customers should a single service be attributed to?
 Could a single service require multiple mechanics?
 As a mechanic would I be responsible for multiple services throughout the day?
+
+Entities:
+customers: id, first_name, last_name, email, phone, address
+service_tickets: id, customer_id, service_desc, price, VIN
+mechanics: id, first_name, last_name, password, email, salary, address
+
+Relationships:
+customer -> service_tickets: 1:M One customer can receive many services, once service_ticket will link back to a single customer
+service_tickets -> mechanics: M:M 1 ticket could require many mechanics, 1 mechanic can work on many tickets

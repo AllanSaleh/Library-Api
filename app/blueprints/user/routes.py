@@ -1,10 +1,32 @@
 # from ...blueprints.user import users_bp
 from app.blueprints.user import users_bp
-from .schemas import user_schema, users_schema
+from .schemas import user_schema, users_schema, login_schema
 from flask import request, jsonify
 from marshmallow import ValidationError
 from app.models import Users, db
 from app.extensions import limiter
+from werkzeug.security import generate_password_hash,check_password_hash
+from app.util.auth import encode_token, token_required
+
+@users_bp.route('/login', methods=['POST'])
+@limiter.limit("5 per 10 minute")
+def login():
+  try:
+    # get my user credentials - responsibility for my client
+    data = login_schema.load(request.json) #JSON -> Python
+  except ValidationError as e:
+    return jsonify(e.messages), 400 #Returning the error as a response so the client can see whats wrong with the status code
+  
+  user = db.session.query(Users).where(Users.email==data['email']).first() #Search my db for a user with the email in the request
+
+  if user and check_password_hash(user.password, data['password']):
+    #Create token for user
+    token = encode_token(user.id, role=user.role)
+    return jsonify({
+      "message": f"Welcome {user.first_name}",
+      "token": token,
+    }), 200
+
 
 # CREATE USER ROUTE
 # Decorator or wrapper
@@ -17,6 +39,8 @@ def create_user():
   except ValidationError as e:
     return jsonify(e.messages), 400 #Returning the error as a response so the client can see whats wrong with the status code
   
+  data["password"] = generate_password_hash(data["password"]) #resetting the password key's value, to the hash of the current value
+
   # Create a User object from my user data
   # new_user = Users(first_name=data['first_name'],)
   new_user = Users(**data)
@@ -34,29 +58,32 @@ def read_users():
   return users_schema.jsonify(users), 200 #Returns the list of users as JSON and HTTP status 200
 
 # Read Individual User - using a Dynamic Endpoint
-@users_bp.route('/<int:user_id>', methods=['GET'])
+@users_bp.route('/profile', methods=['GET'])
 @limiter.limit("15 per hour")
-def read_user(user_id):
+@token_required
+def read_user():
+  user_id = request.logged_in_user_id
   user = db.session.get(Users, user_id)
   return user_schema.jsonify(user), 200
 
 # Delete a User
-@users_bp.route("/<int:user_id>", methods=["DELETE"])
-@limiter.limit("5 per day")
-def delete_user(user_id):
-  # db.session.query(Users).where(Users.id == user_id).delete()
-  user = db.session.get(Users, user_id)
-  if not user:
-    return jsonify({"error":"User not found"}), 404
+@users_bp.route("", methods=["DELETE"])
+@token_required
+def delete_user():
+  token_id = request.logged_in_user_id
+  user = db.session.get(Users, token_id) #look up whoever the token belongs to (aka whos logged it)
+  
   db.session.delete(user)
   db.session.commit()
-  return jsonify({"message": f"Successfully deleted user {user_id}"}), 200
+  return jsonify({"message": f"Successfully deleted user {token_id}"}), 200
 
 #UPDATE A USER
-@users_bp.route("/<int:user_id>", methods=["PUT"])
+@users_bp.route("", methods=["PUT"])
 @limiter.limit("1 per month")
-def update_user(user_id):
+@token_required
+def update_user():
   #Query the user by id
+  user_id = request.logged_in_user_id
   user = db.session.get(Users, user_id) #Query for our user to update
   if not user: #Checking if I got a user with that id
     return jsonify({"message": "User not found"}), 404 

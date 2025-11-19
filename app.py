@@ -8,3 +8,4 @@ with app.app_context():
   db.create_all() #Creating our database tables
 
 app.run()
+

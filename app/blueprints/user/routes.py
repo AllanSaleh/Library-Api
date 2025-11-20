@@ -31,7 +31,7 @@ def login():
 # CREATE USER ROUTE
 # Decorator or wrapper
 @users_bp.route('', methods=['POST'])
-@limiter.limit("2 per day")
+# @limiter.limit("2 per day")
 def create_user():
   try:
     # get my user data - responsibility for my client
@@ -79,7 +79,7 @@ def delete_user():
 
 #UPDATE A USER
 @users_bp.route("", methods=["PUT"])
-@limiter.limit("1 per month")
+# @limiter.limit("1 per month")
 @token_required
 def update_user():
   #Query the user by id
@@ -93,6 +93,8 @@ def update_user():
   except ValidationError as e:
     return jsonify({"message": e.messages}), 400
   # for each of the values that they are sending, we will change the value of the queried object
+
+  user_data["password"] = generate_password_hash(user_data["password"]) #resetting the password key's value, to the hash of the current value
 
   # if user_data['email']:
   #   user.email = user_data["email"]

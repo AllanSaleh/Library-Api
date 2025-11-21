@@ -20,7 +20,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\":\"Bob\",\r\n    \"last_name\": \"A.\",\r\n    \"email\": \"bob2@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"Admin\"\r\n}",
+							"raw": "{\r\n    \"first_name\":\"Stacy\",\r\n    \"last_name\": \"A.\",\r\n    \"email\": \"stacy@gmail.com\",\r\n    \"password\": \"12345\",\r\n    \"role\": \"Admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -88,7 +88,14 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM1MjMwNTksImlhdCI6MTc2MzUxOTQ1OSwic3ViIjoiMiIsInJvbGUiOiJBZG1pbiJ9.NZsvFEVCJxqEwV8coqOju2r1hgUriIvO3tph9Lp2jAE",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -102,7 +109,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/users/1",
+							"raw": "http://127.0.0.1:5000/users/profile",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -113,7 +120,7 @@
 							"port": "5000",
 							"path": [
 								"users",
-								"1"
+								"profile"
 							]
 						}
 					},
@@ -123,13 +130,20 @@
 					"name": "Delete a specific user",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM1MjIwMDgsImlhdCI6MTc2MzUxODQwOCwic3ViIjoiMSIsInJvbGUiOiJBZG1pbiJ9.E1RaDethuikak6xu0oe2HG25GHrbvBgKEjCto56eOhE",
+									"type": "string"
+								}
+							]
 						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\":\"Bob\",\r\n    \"last_name\": \"A.\",\r\n    \"email\": \"bob2@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"Admin\"\r\n}",
+							"raw": "{\r\n    \"first_name\":\"Bob\",\r\n    \"last_name\": \"A.\",\r\n    \"email\": \"bob2@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"Admin\",\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -137,7 +151,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/users/1",
+							"raw": "http://127.0.0.1:5000/users",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -147,8 +161,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"users",
-								"1"
+								"users"
 							]
 						}
 					},
@@ -158,13 +171,20 @@
 					"name": "Update a specific user",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjM1OTg5OTksImlhdCI6MTc2MzU5NTM5OSwic3ViIjoiMiIsInJvbGUiOiJBZG1pbiJ9.pndr3h-82avFHHR7JcDgQgmP7Os94f_JYbgc9R2sQ2U",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\":\"John\",\r\n    \"last_name\": \"Doe\",\r\n    \"email\": \"bob2@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"Admin\"\r\n}",
+							"raw": "{\r\n    \"first_name\":\"John\",\r\n    \"last_name\": \"Doe\",\r\n    \"email\": \"john@gmail.com\",\r\n    \"password\": \"1234567\",\r\n    \"role\": \"Admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -172,7 +192,41 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/users/1",
+							"raw": "http://127.0.0.1:5000/users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@gmail.com\",\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/login",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -183,7 +237,7 @@
 							"port": "5000",
 							"path": [
 								"users",
-								"1"
+								"login"
 							]
 						}
 					},
@@ -201,7 +255,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Deep Work\",\n    \"author\": \"Cal Newport\",\n    \"age_category\": \"everyone\",\n    \"publish_date\": \"2017-11-15\",\n    \"genre\": \"self help\"\n}",
+							"raw": "{\n    \"title\": \"Python Park\",\n    \"author\": \"Michael Crichto\",\n    \"age_category\": \"everyone\",\n    \"publish_date\": \"2017-11-15\",\n    \"genre\": \"self help\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,7 +295,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/books",
+							"raw": "http://127.0.0.1:5000/books?page=1&per_page=3",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -252,6 +306,388 @@
 							"port": "5000",
 							"path": [
 								"books"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get popular books",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/books/popularity",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"books",
+								"popularity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search a book",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/books/search?title=park",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"books",
+								"search"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "park"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Loans",
+			"item": [
+				{
+					"name": "Create loan",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/loans",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"loans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add book to loan",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 5\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/loans/5/add-book/4",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"loans",
+								"5",
+								"add-book",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/orders",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adding Item to Order",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/orders/1/add-item/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"orders",
+								"1",
+								"add-item",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Checkout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/orders/1/checkout",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"orders",
+								"1",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "Create a Item Description",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"item_name\":\"Bagel\",\n    \"price\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/items/descriptions",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"items",
+								"descriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Item Descriptions",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/items/descriptions",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"items",
+								"descriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adding Items",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/items/1?qty=5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"items",
+								"1"
+							],
+							"query": [
+								{
+									"key": "qty",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Items",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/items",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"items"
 							]
 						}
 					},

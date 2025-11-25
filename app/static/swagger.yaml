@@ -1,0 +1,225 @@
+swagger: '2.0'
+info:
+  title: "Library Management API"
+  description: "Used to manage the everyday functionalities of a library"
+  version: "0.0.1"
+
+host: '127.0.0.1:5000' #During development of my API is served on my local host (Will change when we go to prod)
+schemes:
+  - "http"
+consumes:
+  - "application/json" #My api recvieves json data
+produce:
+  - "application/json" #and produces json data
+
+securityDefinitions: #Describing how to add token auth to the endpoints
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+
+paths: #Information about our routes
+
+  /users/login: #endpoint starts the path
+    post: #request type (post, get, put, delete)
+      tags:
+        - Users #Adds this route to a category
+      summary: "Login endpoint (generates a token)" #At a glance information about the endpoint
+      description: "Validates user credentials (email and password), and produces a user specifec token" #more in-depth info about the endpoint
+      parameters: #info about the data being sent (DONT FORGET THE 'S' in parameter)
+        - in: "body" #where will this info come from
+          name: "body"
+          description: "Login Credentials" #what are you sending
+          required: true
+          schema:
+            $ref: "#/definitions/LoginCredentials"
+      responses:
+        200:
+          description: "Login Successful"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+          examples:
+            application/json:
+              message: "Welcome User"
+              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+  /users:
+    post: #create User endpoint
+      tags:
+        - Users
+      summary: "Register User"
+      description: "Send in user info, to create a user profile that will be stored in the database."
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New User Information"
+          required: true
+          schema:
+            $ref: "#/definitions/UserInput"
+      
+      responses:
+        201:
+          description: "Creation Successful"
+          schema: "#/definitions/UserResponse"
+          examples:
+            application/json:
+              DOB: "1990-01-01"
+              address: "123 Fun St."
+              email: "john@gmail.com"
+              first_name: "John"
+              id: 0
+              last_name: "Doe"
+              password: "<encrypted password>"
+              role: "Admin"
+
+    get: #Get all users Endpoint
+      tags:
+        - Users
+      summary: "Return all users"
+      description: "Endpoint to revieve an array of user objects"
+      responses:
+        200:
+          description: "Successful Retrieval of Users"
+          schema:
+            $ref: "#/definitions/UsersResponse"
+
+    put: #Update a user
+      tags:
+      - Users
+      summary: "Update User Endpoint"
+      description: "Endpoint to update a user, requires a token, user will be identified by the token"
+      security:
+        - bearerAuth: [] #Referencing our Token Auth definition (Make sure when authorizing in Swagger you add Bearer <token>)
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User Updates"
+          required: true
+          schema:
+            $ref: "#/definitions/UserInput"
+      
+      responses:
+        200:
+          description: "Update Successful"
+          schema: "#/definitions/UserResponse"
+          examples:
+            application/json:
+              DOB: "1990-01-01"
+              address: "123 Fun St."
+              email: "john@gmail.com"
+              first_name: "John"
+              id: 0
+              last_name: "Doe"
+              password: "<encrypted password>"
+              role: "Admin"
+
+    delete: #Delete a User
+      tags:
+        - Users
+      summary: "Delete a User"
+      description: "Delete a user, requires a token, token will be used to identify user to delete"
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+definitions: #Information about the shape of input and output json
+
+  LoginCredentials: #Input data required for login route
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    
+    required:
+      - email
+      - password
+  
+  LoginResponse: #Response from /login endpoint
+    type: object
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+  
+  UserInput: #Sending user information
+    type: object
+    properties:
+      first_name:
+        type: string
+        example: "John"
+      last_name:
+        type: string
+        example: "Doe"
+      email:
+        type: string
+        example: "john@gmail.com"
+      password:
+        type: string
+        example: "12345"
+      DOB:
+        type: string
+        example: "1990-01-01"
+      address:
+        type: string
+        example: "123 Fun St."
+      role:
+        type: string
+        example: "Admin"
+
+    required:
+      - email
+      - password
+      - role
+      - first_name
+      - last_name  
+  
+  UserResponse: #Revieve single user profile
+    type: object
+    properties:
+      DOB:
+        type: string
+      address:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+
+  UsersResponse: #Revieve for multiple users
+    type: array
+    items:
+      type: object
+      properties:
+        DOB:
+          type: string
+        address:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        last_name:
+          type: string
+        password:
+          type: string
+        role:
+          type: string

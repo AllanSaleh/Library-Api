@@ -6,6 +6,13 @@ from .blueprints.books import books_bp
 from .blueprints.loans import loans_bp
 from .blueprints.orders import orders_bp
 from .blueprints.items import items_bp
+from flask_swagger_ui import get_swaggerui_blueprint #need to create a blueprint to plug into our app
+
+SWAGGER_URL = '/api/docs' #URL for exposing my swagger ui
+API_URL = '/static/swagger.yaml'
+
+#creating swagger blueprint
+swagger_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL, config={'app_name':'Library Management API'})
 
 def create_app(config_name):
   app = Flask(__name__)
@@ -23,5 +30,6 @@ def create_app(config_name):
   app.register_blueprint(loans_bp, url_prefix='/loans')
   app.register_blueprint(orders_bp, url_prefix='/orders')
   app.register_blueprint(items_bp, url_prefix='/items')
+  app.register_blueprint(swagger_blueprint, url_prefix=SWAGGER_URL)
 
   return app

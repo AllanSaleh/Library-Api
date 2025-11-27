@@ -6,9 +6,11 @@ from marshmallow import ValidationError
 from app.models import Books, db
 from app.extensions import limiter, cache
 from sqlalchemy import select
+from app.util.auth import admin_required
 
 #Create Book Endpoint
 @books_bp.route('', methods=['POST'])
+@admin_required
 def create_book():
     try:
         data = book_schema.load(request.json) #validates data and translates json object to python dictionary

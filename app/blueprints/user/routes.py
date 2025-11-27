@@ -39,15 +39,23 @@ def create_user():
   except ValidationError as e:
     return jsonify(e.messages), 400 #Returning the error as a response so the client can see whats wrong with the status code
   
+  # taken = db.session.query(Users).where(Users.email == data["email"]).first()
+  # if taken:
+  #   return jsonify({'message': "email is taken"}), 400
+
   data["password"] = generate_password_hash(data["password"]) #resetting the password key's value, to the hash of the current value
 
-  # Create a User object from my user data
-  # new_user = Users(first_name=data['first_name'],)
-  new_user = Users(**data)
-  # add User to session
-  db.session.add(new_user)
-  # commit to session
-  db.session.commit()
+  try:
+    # Create a User object from my user data
+    # new_user = Users(first_name=data['first_name'],)
+    new_user = Users(**data)
+    # add User to session
+    db.session.add(new_user)
+    # commit to session
+    db.session.commit()
+  except:
+    return jsonify({'message': "email is taken"}), 400
+  
   #Python -> JSON
   return user_schema.jsonify(new_user), 201 #Successful creation status code
 
@@ -63,7 +71,7 @@ def read_users():
 @token_required
 def read_user():
   user_id = request.logged_in_user_id
-  user = db.session.get(Users, user_id)
+  user = db.session.get(Users, user_id) #querying our database by id
   return user_schema.jsonify(user), 200
 
 # Delete a User

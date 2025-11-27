@@ -97,4 +97,14 @@ class TestUsers(unittest.TestCase):
         self.assertEqual(response.json["email"], "NEW_EMAIL@email.com")
         self.assertEqual(response.json["first_name"], "Tester")
 
+    def test_nonunique_email(self):
+        user_payload = {
+            "email": "tester@email.com",
+            "first_name": "Test",
+            "last_name": "Lasttest",
+            "password": "12345",
+            "role": "user"
+        }
 
+        response = self.client.post ('/users', json=user_payload)
+        self.assertEqual(response.status_code, 400)

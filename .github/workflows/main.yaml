@@ -60,3 +60,5 @@ jobs: #The actions
       
       - name: Run tests
         run: python -m unittest discover -s tests -p 'test_*.py' #Running all test files inside my test folder as long as the file starts with test_(something).py
+
+    

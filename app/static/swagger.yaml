@@ -4,9 +4,9 @@ info:
   description: "Used to manage the everyday functionalities of a library"
   version: "0.0.1"
 
-host: '127.0.0.1:5000' #During development of my API is served on my local host (Will change when we go to prod)
+host: 'my-cool-library-7qrj.onrender.com' #During development of my API is served on my local host (Will change when we go to prod)
 schemes:
-  - "http"
+  - "https"
 consumes:
   - "application/json" #My api recvieves json data
 produce:

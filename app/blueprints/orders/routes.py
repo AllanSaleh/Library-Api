@@ -21,7 +21,7 @@ def create_order():
 # Add item to order
 @orders_bp.route('/<int:order_id>/add-item/<int:description_id>', methods=['PUT'])
 def add_item(order_id, description_id):
-    item = db.session.query(Items).where(Items.order_id==None, Items.desc_id==description_id).first
+    item = db.session.query(Items).where(Items.order_id==None, Items.desc_id==description_id).first()
 
     if not item:
         return jsonify({

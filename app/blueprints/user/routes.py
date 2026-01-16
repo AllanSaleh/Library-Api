@@ -25,6 +25,7 @@ def login():
     return jsonify({
       "message": f"Welcome {user.first_name}",
       "token": token,
+      "user": user_schema.dump(user)
     }), 200
 
 

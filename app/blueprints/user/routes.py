@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from app.util.auth import encode_token, token_required
 
 @users_bp.route('/login', methods=['POST'])
-@limiter.limit("5 per 10 minute")
+# @limiter.limit("5 per 10 minute")
 def login():
   try:
     # get my user credentials - responsibility for my client

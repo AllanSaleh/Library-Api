@@ -27,6 +27,8 @@ def login():
       "token": token,
       "user": user_schema.dump(user)
     }), 200
+    
+  return jsonify({"message": "Invalid email or password"}), 401
 
 
 # CREATE USER ROUTE
